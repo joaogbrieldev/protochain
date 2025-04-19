@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "compile": "npx tsc",
+    "blockchain": "ts-node ./src/server/blockchainServer.ts --run",
     "test": "jest"
   },
   "keywords": [],
@@ -12,13 +14,19 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/crypto-js": "^4.2.2",
+    "@types/express": "^5.0.1",
     "@types/jest": "^29.5.13",
+    "@types/morgan": "^1.9.9",
+    "@types/supertest": "^6.0.3",
     "jest": "^29.7.0",
+    "supertest": "^7.1.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.3"
   },
   "dependencies": {
     "crypto-js": "^4.2.0",
+    "express": "^5.1.0",
+    "morgan": "^1.10.0",
     "ts-node": "^10.9.2"
   }
 }

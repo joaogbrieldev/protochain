@@ -9,6 +9,10 @@ const config: Config = {
   transformIgnorePatterns: ["/node_modules/"],
   clearMocks: true,
   coverageProvider: "v8",
+  collectCoverageFrom: [
+    "<rootDir>/src/lib/**/*.ts",
+    "<rootDir>/src/server/**/*.ts",
+  ],
 };
 
 export default config;
