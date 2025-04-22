@@ -6,6 +6,7 @@
   "scripts": {
     "compile": "npx tsc",
     "blockchain": "ts-node ./src/server/blockchainServer.ts --run",
+    "miner": "ts-node ./src/client/minerClient.ts",
     "test": "jest"
   },
   "keywords": [],
@@ -24,7 +25,9 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "axios": "^1.8.4",
     "crypto-js": "^4.2.0",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "morgan": "^1.10.0",
     "ts-node": "^10.9.2"
