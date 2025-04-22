@@ -1,9 +1,11 @@
+import dotenv from "dotenv";
 import express, { Request } from "express";
 import morgan from "morgan";
 import Block from "../block";
 import BlockChain from "../blockchain";
+dotenv.config();
 
-const PORT: number = 3001;
+const PORT: number = parseInt(`${process.env.PORT}`) || 3000;
 
 const app = express();
 
@@ -21,6 +23,13 @@ app.get("/status", (req: Request, res: any) => {
     isValid: blockchain.isValid(),
     lastBlock: blockchain.getLastBlock(),
   });
+});
+
+app.get("/blocks/next", (req: Request, res: any) => {
+  const nextBlock = blockchain.getNextBlock();
+
+  if (!nextBlock) return res.sendStatus(404);
+  else return res.json(nextBlock);
 });
 
 app.get("/blocks/:indexOrHash", (req: Request, res: any) => {
