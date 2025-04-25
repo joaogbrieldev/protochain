@@ -1,9 +1,9 @@
 import request from "supertest";
-import Block from "../src/block";
+import Block from "../src/lib/block";
 import { app } from "../src/server/blockchainServer";
 
-jest.mock("../src/block");
-jest.mock("../src/blockchain");
+jest.mock("../src/lib/block");
+jest.mock("../src/lib/blockchain");
 describe("BlockchainServer Tests", () => {
   test("GET /status", async () => {
     const response = await request(app).get("/status/");

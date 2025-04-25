@@ -1,7 +1,8 @@
-import Block from "../src/block";
-import BlockChain from "../src/blockchain";
+import Block from "../src/lib/block";
+import BlockChain from "../src/lib/blockchain";
+import Transaction from "../src/lib/transaction";
 
-jest.mock("../src/block");
+jest.mock("../src/lib/block");
 
 describe("Blockchain tests", () => {
   test("Should has genesis blocks", () => {
@@ -20,7 +21,11 @@ describe("Blockchain tests", () => {
       new Block({
         index: 1,
         previousHash: blockchain.blocks[0].hash,
-        data: "Block 2",
+        transactions: [
+          new Transaction({
+            data: "Block 2",
+          } as Transaction),
+        ],
       } as Block)
     );
     expect(blockchain.isValid().sucess).toEqual(true);
@@ -32,7 +37,11 @@ describe("Blockchain tests", () => {
       new Block({
         index: 1,
         previousHash: blockchain.blocks[0].hash,
-        data: "Block 2",
+        transactions: [
+          new Transaction({
+            data: "Block 2",
+          } as Transaction),
+        ],
       } as Block)
     );
     blockchain.blocks[1].index = -1;
@@ -45,7 +54,11 @@ describe("Blockchain tests", () => {
       new Block({
         index: 1,
         previousHash: blockchain.blocks[0].hash,
-        data: "Block 2",
+        transactions: [
+          new Transaction({
+            data: "Block 2",
+          } as Transaction),
+        ],
       } as Block)
     );
     expect(result.sucess).toEqual(true);
@@ -56,7 +69,11 @@ describe("Blockchain tests", () => {
     const block = new Block({
       index: -1,
       previousHash: blockchain.blocks[0].hash,
-      data: "Block 2",
+      transactions: [
+        new Transaction({
+          data: "Block 2",
+        } as Transaction),
+      ],
     } as Block);
     const result = blockchain.addBlock(block);
     expect(result.sucess).toEqual(false);
