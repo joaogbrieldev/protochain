@@ -1,5 +1,4 @@
-import sha256 from "crypto-js/sha256";
-import Validation from "./validation";
+import Validation from "../validation";
 
 export enum TransactionType {
   REGULAR = 1,
@@ -20,11 +19,9 @@ export default class Transaction {
   }
 
   getHash(): string {
-    return sha256(this.type + this.data + this.timestamp).toString();
+    return "abc";
   }
   isValid(): Validation {
-    if (this.hash !== this.getHash())
-      return new Validation(false, "Invalid hash");
     if (!this.data) return new Validation(false, "Invalid data");
     return new Validation();
   }

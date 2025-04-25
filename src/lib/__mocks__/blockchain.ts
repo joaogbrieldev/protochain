@@ -1,6 +1,7 @@
 import BlockInfo from "../blockinfo";
-import Validation from "../lib/validation";
+import Validation from "../validation";
 import Block from "./block";
+import Transaction, { TransactionType } from "./transaction";
 
 export default class BlockChain {
   blocks: Block[];
@@ -12,7 +13,12 @@ export default class BlockChain {
         index: 0,
         previousHash: "",
         hash: "abc",
-        data: "Genesis Block",
+        transactions: [
+          new Transaction({
+            data: "tx1",
+            type: TransactionType.FEE,
+          } as Transaction),
+        ],
         timestamp: Date.now(),
       } as Block),
     ];
@@ -45,7 +51,11 @@ export default class BlockChain {
 
   getNextBlock(): BlockInfo {
     return {
-      data: new Date().toString(),
+      transactions: [
+        new Transaction({
+          data: new Date().toString(),
+        } as Transaction),
+      ],
       difficulty: 0,
       previousHash: this.getLastBlock().hash,
       index: 1,

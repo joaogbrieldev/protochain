@@ -1,7 +1,7 @@
 import sha256 from "crypto-js/sha256";
 import BlockInfo from "./blockinfo";
-import Transaction, { TransactionType } from "./lib/transaction";
-import Validation from "./lib/validation";
+import Transaction, { TransactionType } from "./transaction";
+import Validation from "./validation";
 
 export default class Block {
   index: number;

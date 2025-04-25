@@ -1,4 +1,4 @@
-import Transaction from "./lib/transaction";
+import Transaction from "./transaction";
 
 export default interface BlockInfo {
   index: number;

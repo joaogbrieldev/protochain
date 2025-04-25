@@ -1,7 +1,7 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import Block from "../block";
-import BlockInfo from "../blockinfo";
+import Block from "../lib/block";
+import BlockInfo from "../lib/blockInfo";
 dotenv.config();
 
 const BLOCKCHAIN_SERVER = process.env.BLOCKCHAIN_SERVER;
