@@ -13,7 +13,7 @@ const config: Config = {
     "<rootDir>/src/lib/**/*.ts",
     "<rootDir>/src/server/**/*.ts",
   ],
-  coveragePathIgnorePatterns: ["/node_modules/", "/src/lib/blockinfo.ts"],
+  coveragePathIgnorePatterns: ["/node_modules/", "/src/lib/blockInfo.ts"],
   setupFiles: ["dotenv/config"],
 };
 
