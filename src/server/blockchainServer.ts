@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import Block from "../lib/block";
 import BlockChain from "../lib/blockchain";
+import Transaction from "../lib/transaction";
 dotenv.config();
 
 /* c8 ignore next */
@@ -46,6 +47,28 @@ app.post("/blocks", (req: Request, res: any) => {
   const validation = blockchain.addBlock(block);
   if (validation.sucess) res.status(201).json(block);
   else res.status(400).json(validation);
+});
+
+app.post("/transactions", (req: Request, res: any) => {
+  if (req.body.hash === undefined) return res.sendStatus(422);
+  const tx = new Transaction(req.body as Transaction);
+  const validation = blockchain.addTransaction(tx);
+  if (validation.sucess) res.status(201).json(tx);
+  else res.status(400).json(validation);
+});
+
+app.get("/transactions", (req: Request, res: any) => {
+  return res.json({
+    next: blockchain.mempool.slice(0, BlockChain.TX_PER_BLOCK),
+    total: blockchain.mempool.length,
+  });
+});
+
+app.get("/transactions/:hash", (req: Request, res: any) => {
+  if (req.params.hash) {
+    res.json(blockchain.getTransaction(req.params.hash));
+  }
+  return res.json(blockchain.mempool);
 });
 
 /* c8 ignore start */
