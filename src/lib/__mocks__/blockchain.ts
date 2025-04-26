@@ -1,4 +1,4 @@
-import BlockInfo from "../blockinfo";
+import BlockInfo from "../blockInfo";
 import Validation from "../validation";
 import Block from "./block";
 import Transaction, { TransactionType } from "./transaction";

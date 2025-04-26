@@ -1,5 +1,5 @@
 import sha256 from "crypto-js/sha256";
-import BlockInfo from "./blockinfo";
+import BlockInfo from "./blockInfo";
 import Transaction, { TransactionType } from "./transaction";
 import Validation from "./validation";
 
