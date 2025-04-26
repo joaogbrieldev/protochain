@@ -33,15 +33,15 @@ describe("Blockchain tests", () => {
 
   test("Should NOT be valid", () => {
     const blockchain = new BlockChain();
-    blockchain.addBlock(
+    const tx = new Transaction({
+      data: "tx1",
+    } as Transaction);
+    blockchain.mempool.push(tx);
+    const result = blockchain.addBlock(
       new Block({
         index: 1,
         previousHash: blockchain.blocks[0].hash,
-        transactions: [
-          new Transaction({
-            data: "Block 2",
-          } as Transaction),
-        ],
+        transactions: [tx],
       } as Block)
     );
     blockchain.blocks[1].index = -1;
@@ -50,17 +50,18 @@ describe("Blockchain tests", () => {
 
   test("Should add blocks", () => {
     const blockchain = new BlockChain();
+    const tx = new Transaction({
+      data: "tx1",
+    } as Transaction);
+    blockchain.mempool.push(tx);
     const result = blockchain.addBlock(
       new Block({
         index: 1,
         previousHash: blockchain.blocks[0].hash,
-        transactions: [
-          new Transaction({
-            data: "Block 2",
-          } as Transaction),
-        ],
+        transactions: [tx],
       } as Block)
     );
+    console.log(result.message);
     expect(result.sucess).toEqual(true);
   });
 
@@ -91,7 +92,14 @@ describe("Blockchain tests", () => {
   });
   test("Should get next block info", () => {
     const blockchain = new BlockChain();
+    blockchain.mempool.push(new Transaction());
     const info = blockchain.getNextBlock();
-    expect(info.index).toEqual(1);
+    expect(info ? info.index : 0).toEqual(1);
+  });
+
+  test("Should NOT get next block info", () => {
+    const blockchain = new BlockChain();
+    const info = blockchain.getNextBlock();
+    expect(info).toEqual(null);
   });
 });
