@@ -1,13 +1,16 @@
 import BlockInfo from "../blockInfo";
+import TransactionSearch from "../transactionSearch";
 import Validation from "../validation";
 import Block from "./block";
 import Transaction, { TransactionType } from "./transaction";
 
 export default class BlockChain {
   blocks: Block[];
+  mempool: Transaction[];
   nextIndex: number = 0;
 
   constructor() {
+    this.mempool = [];
     this.blocks = [
       new Block({
         index: 0,
@@ -39,6 +42,22 @@ export default class BlockChain {
     this.blocks.push(block);
     this.nextIndex++;
     return new Validation();
+  }
+
+  addTransaction(transaction: Transaction): Validation {
+    const validation = transaction.isValid();
+    if (!validation.sucess) return validation;
+    this.mempool.push(transaction);
+    return new Validation();
+  }
+
+  getTransaction(hash: string): TransactionSearch {
+    return {
+      mempoolIndex: 0,
+      transaction: {
+        hash,
+      },
+    } as TransactionSearch;
   }
 
   isValid(): Validation {

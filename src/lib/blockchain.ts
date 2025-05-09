@@ -99,8 +99,10 @@ export default class BlockChain {
     );
     if (blockIndex !== -1)
       return {
-        mempoolIndex,
-        transaction: this.mempool[blockIndex],
+        blockIndex,
+        transaction: this.blocks[blockIndex].transactions.find(
+          (tx) => tx.hash === hash
+        ),
       } as TransactionSearch;
     return {
       blockIndex: -1,

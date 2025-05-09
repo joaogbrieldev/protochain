@@ -50,7 +50,6 @@ app.post("/blocks", (req: Request, res: any) => {
 });
 
 app.post("/transactions", (req: Request, res: any) => {
-  if (req.body.hash === undefined) return res.sendStatus(422);
   const tx = new Transaction(req.body as Transaction);
   const validation = blockchain.addTransaction(tx);
   if (validation.sucess) res.status(201).json(tx);
