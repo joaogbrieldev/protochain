@@ -1,9 +1,10 @@
 import request from "supertest";
-import Block from "../src/block";
+import Block from "../src/lib/block";
+import Transaction from "../src/lib/transaction";
 import { app } from "../src/server/blockchainServer";
 
-jest.mock("../src/block");
-jest.mock("../src/blockchain");
+jest.mock("../src/lib/block");
+jest.mock("../src/lib/blockchain");
 describe("BlockchainServer Tests", () => {
   test("GET /status", async () => {
     const response = await request(app).get("/status/");
@@ -64,5 +65,30 @@ describe("BlockchainServer Tests", () => {
     const response = await request(app).post(`/blocks`).send(block);
     expect(response.status).toEqual(400);
     expect(response.body.index).toEqual(undefined);
+  });
+
+  test("GET /transactions/:hash", async () => {
+    const response = await request(app).get(`/transactions/abc`);
+    expect(response.status).toEqual(200);
+    expect(response.body.mempoolIndex).toEqual(0);
+  });
+
+  test("POST /transactions - should add transactions", async () => {
+    const tx = new Transaction({ data: "tx1" } as Transaction);
+    const response = await request(app).post(`/transactions/`).send(tx);
+    expect(response.status).toEqual(201);
+  });
+
+  test("POST /transactions - should NOT add transactions", async () => {
+    const tx = new Transaction({ data: "" } as Transaction);
+    const response = await request(app).post(`/transactions/`).send(tx);
+    expect(response.status).toEqual(400);
+  });
+
+  test("GET /transactions", async () => {
+    const response = await request(app).get(`/transactions`);
+    console.log(response.body);
+    expect(response.status).toEqual(200);
+    expect(response.body.next.length).toEqual(1);
   });
 });

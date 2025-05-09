@@ -1,17 +1,19 @@
 import dotenv from "dotenv";
-import express, { Request } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
-import Block from "../block";
-import BlockChain from "../blockchain";
+import Block from "../lib/block";
+import BlockChain from "../lib/blockchain";
+import Transaction from "../lib/transaction";
 dotenv.config();
 
-const PORT: number = parseInt(`${process.env.PORT}`) || 3000;
+/* c8 ignore next */
+const PORT: number = parseInt(`${process.env.BLOCKCHAIN_PORT || 3000}`);
 
 const app = express();
 
-if (process.argv.includes("--run")) {
-  app.use(morgan("tiny"));
-}
+/* c8 ignore start */
+if (process.argv.includes("--run")) app.use(morgan("tiny"));
+/* c8 ignore stop */
 
 app.use(express.json());
 
@@ -25,11 +27,8 @@ app.get("/status", (req: Request, res: any) => {
   });
 });
 
-app.get("/blocks/next", (req: Request, res: any) => {
-  const nextBlock = blockchain.getNextBlock();
-
-  if (!nextBlock) return res.sendStatus(404);
-  else return res.json(nextBlock);
+app.get("/blocks/next", (req: Request, res: Response, next: NextFunction) => {
+  res.json(blockchain.getNextBlock());
 });
 
 app.get("/blocks/:indexOrHash", (req: Request, res: any) => {
@@ -50,9 +49,32 @@ app.post("/blocks", (req: Request, res: any) => {
   else res.status(400).json(validation);
 });
 
-if (process.argv.includes("--run"))
-  app.listen(PORT, () => {
-    console.log("a");
+app.post("/transactions", (req: Request, res: any) => {
+  const tx = new Transaction(req.body as Transaction);
+  const validation = blockchain.addTransaction(tx);
+  if (validation.sucess) res.status(201).json(tx);
+  else res.status(400).json(validation);
+});
+
+app.get("/transactions", (req: Request, res: any) => {
+  return res.json({
+    next: blockchain.mempool.slice(0, BlockChain.TX_PER_BLOCK),
+    total: blockchain.mempool.length,
   });
+});
+
+app.get("/transactions/:hash", (req: Request, res: any) => {
+  if (req.params.hash) {
+    res.json(blockchain.getTransaction(req.params.hash));
+  }
+  return res.json(blockchain.mempool);
+});
+
+/* c8 ignore start */
+if (process.argv.includes("--run"))
+  app.listen(PORT, () =>
+    console.log(`Blockchain server is running at ${PORT}.`)
+  );
+/* c8 ignore stop */
 
 export { app };
